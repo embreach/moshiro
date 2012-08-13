@@ -10,6 +10,8 @@
 
   audio.load();
 
-  audio.play();
+  setTimeout((function() {
+    return audio.play();
+  }), 1000);
 
 }).call(this);
