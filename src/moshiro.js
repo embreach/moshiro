@@ -7,14 +7,26 @@
     function Moshiro() {
       this.audio = new Audio;
       this.audio.preload = "none";
-      this.audio.setAttribute("src", "/Moshiro_8bit/moshiro.mp3");
-      this.audio.load();
+      this.audio.addEventListener('play', function() {
+        return console.log("Play");
+      });
+      this.audio.addEventListener('loadeddata', function() {
+        return console.log("Loaded data");
+      });
+      this.audio.addEventListener('playing', function() {
+        return console.log("Playing");
+      });
       this.audio.addEventListener('ended', function() {
-        return console.log("That's it!");
+        return console.log("Ended");
+      });
+      this.audio.addEventListener('timeupdate', function() {
+        return document.getElementById("Tock").innerHTML = '<b>' + new Date() + '</b>';
       });
     }
 
     Moshiro.prototype.play = function() {
+      this.audio.setAttribute("src", "/Moshiro_8bit/moshiro.mp3");
+      this.audio.load();
       return this.audio.play();
     };
 
