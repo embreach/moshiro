@@ -1,0 +1,1 @@
+audio = new Audio "lol"
