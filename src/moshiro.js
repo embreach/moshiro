@@ -14,4 +14,8 @@
     return audio.play();
   }), 1000);
 
+  audio.addEventListener('ended', function() {
+    return console.log("That's it!");
+  });
+
 }).call(this);
