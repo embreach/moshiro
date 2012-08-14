@@ -13,6 +13,4 @@ class Moshiro
     @audio.load()
     @audio.play()
 
-m = new Moshiro
-
 window['Moshiro'] = Moshiro
