@@ -8,8 +8,8 @@ class Moshiro
     @audio.addEventListener('ended', -> console.log("Ended"))
     @audio.addEventListener('timeupdate', -> document.getElementById("Tock").innerHTML = '<b>' + new Date() + '</b>')
 
-  play: ->
-    @audio.setAttribute "src", "/Moshiro_8bit/moshiro.mp3"
+  play: (mp3) ->
+    @audio.setAttribute "src", mp3
     @audio.load()
     @audio.play()
 
