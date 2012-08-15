@@ -1,17 +1,15 @@
-class Music
-  constructor: (mp3) ->
-    @audio = new Audio
-    @audio.setAttribute "src", mp3
-    @audio.load()
-    @audio.play()
+always = (value) ->
+  -> value
 
-class Keyboard
-  constructor: ->
-    spaces = $(document).asEventStream("keydown").filter((event) -> event.keyCode == 32)
-    spaces.onValue((state) -> console.log(state))
+spaces = (event) ->
+  $(document).asEventStream(event).filter((event) -> event.keyCode == 32).map(always("Space going " + event))
 
-class Moshiro
-  constructor: ->
-    new Music("/moshiro.mp3")
+spaces("keydown").merge(spaces("keyup")).onValue((state) -> console.log(state))
 
-window["Moshiro"] = Moshiro
+play = (mp3) ->
+  audio = new Audio()
+  audio.setAttribute("src", mp3)
+  audio.load()
+  audio.play()
+
+window["start"] = -> play("/moshiro.mp3")
