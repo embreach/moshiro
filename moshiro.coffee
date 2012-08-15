@@ -1,5 +1,5 @@
 always = (constant) ->
-  -> constant
+  -> $('#debug').text(constant); constant
 
 key = (keyCode) ->
   events = (type) ->
@@ -10,6 +10,13 @@ key = (keyCode) ->
   keydown.merge(keyup).distinctUntilChanged()
 
 spaceKey = key(32)
+
+touches = ->
+  touch = $('body').asEventStream('touchstart').map(always("DOWN"))
+  cantTouch = $('body').asEventStream('touchend').map(always("UP"))
+  touch.merge(cantTouch)
+
+direction = spaceKey.merge(touches())
 
 loadImage = (url) ->
   promise = $.Deferred()
@@ -26,10 +33,12 @@ loadAudio = (url) ->
   audio.load()
   promise
 
-$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png'), loadAudio("../moshiro.mp3")).done (frame1, frame2, theme) ->
+# FIXME mp3 not loaded!
+# loadAudio("../moshiro.mp3")
+$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2, theme) ->
   poses = { UP: frame1, DOWN: frame2 }
 
-  images = spaceKey.map (direction) -> poses[direction]
+  images = direction.map (current) -> poses[current]
 
   canvas = $('#game').get(0).getContext('2d')
   canvas.font = "bold 12px sans-serif"
