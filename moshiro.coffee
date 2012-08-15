@@ -11,7 +11,7 @@ key = (keyCode) ->
 
 spaceKey = key(32)
 
-poses = { UP: "assets/Moshiro_1frame.png", DOWN: "assets/Moshiro_2frame.png" }
+poses = { UP: "../Moshiro_1frame.png", DOWN: "../Moshiro_2frame.png" }
 
 images = spaceKey.map (direction) -> poses[direction]
 
@@ -30,4 +30,4 @@ play = (mp3) ->
   audio.load()
   audio.play()
 
-spaceKey.take(1).onValue(-> play("assets/moshiro.mp3"))
+spaceKey.take(1).onValue(-> play("../moshiro.mp3"))
