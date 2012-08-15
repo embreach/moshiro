@@ -1,5 +1,5 @@
 always = (constant) ->
-  -> $('#debug').text(constant); constant
+  -> constant
 
 key = (keyCode) ->
   events = (type) ->
@@ -11,14 +11,15 @@ key = (keyCode) ->
 
 spaceKey = key(32)
 
-# TODO Cleanup
 touches = ->
-  touch = $('body').asEventStream('touchstart').map(always("DOWN"))
-  cantTouch = $('body').asEventStream('touchend').map(always("UP"))
+  preventDefault = (e) -> e.preventDefault()
+  touch = $('body').asEventStream('touchstart').do(preventDefault).map(always("DOWN"))
+  cantTouch = $('body').asEventStream('touchend').do(preventDefault).map(always("UP"))
   touch.merge(cantTouch)
 
 direction = spaceKey.merge(touches())
 
+# TODO Bacon.fromPromise ???
 loadImage = (url) ->
   promise = $.Deferred()
   img = new Image()
