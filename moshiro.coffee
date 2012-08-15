@@ -4,7 +4,7 @@ always = (value) ->
 spaces = (event) ->
   $(document).asEventStream(event).filter((event) -> event.keyCode == 32).map(always("Space going " + event))
 
-spaces("keydown").merge(spaces("keyup")).onValue((state) -> console.log(state))
+spaces("keydown").merge(spaces("keyup")).distinctUntilChanged().onValue((state) -> console.log(state))
 
 play = (mp3) ->
   audio = new Audio()
