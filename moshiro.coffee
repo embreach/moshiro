@@ -16,7 +16,6 @@ poses = { UP: "/Moshiro_1frame.png", DOWN: "/Moshiro_2frame.png" }
 images = spaceKey.map (direction) -> poses[direction]
 
 images.onValue (image) ->
-  console.log("Draw", image)
   # TODO preload
   img = new Image()
   img.src = image
