@@ -11,7 +11,7 @@ key = (keyCode) ->
 
 spaceKey = key(32)
 
-poses = { UP: "assets/Moshiro_3frame.png", DOWN: "assets/Moshiro_2frame.png" }
+poses = { UP: "assets/Moshiro_1frame.png", DOWN: "assets/Moshiro_2frame.png" }
 
 images = spaceKey.map (direction) -> poses[direction]
 
