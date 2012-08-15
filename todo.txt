@@ -1,0 +1,3 @@
+- "canplaythrough" not supported on iOs
+- mp3 doesn't work in FF
+- touch events in iOs
