@@ -18,14 +18,15 @@ loadImage = (url) ->
   img.src = url
   promise
 
-play = (mp3) ->
+loadAudio = (url) ->
+  promise = $.Deferred()
   audio = new Audio()
-  audio.setAttribute("src", mp3)
+  audio.addEventListener "canplaythrough", -> promise.resolve audio
+  audio.setAttribute("src", url)
   audio.load()
-  audio.play()
+  promise
 
-# TODO also load mp3 before starting
-$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2) ->
+$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png'), loadAudio("../moshiro.mp3")).done (frame1, frame2, theme) ->
   poses = { UP: frame1, DOWN: frame2 }
 
   images = spaceKey.map (direction) -> poses[direction]
@@ -40,6 +41,4 @@ $.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).d
   $('#loading').hide()
   $('#game').show()
 
-  canvas.dra
-
-  spaceKey.take(1).onValue(-> play("../moshiro.mp3"))
+  spaceKey.take(1).onValue(-> theme.play())
