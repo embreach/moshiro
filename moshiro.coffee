@@ -11,18 +11,12 @@ key = (keyCode) ->
 
 spaceKey = key(32)
 
-poses = { UP: "../Moshiro_1frame.png", DOWN: "../Moshiro_2frame.png" }
-
-images = spaceKey.map (direction) -> poses[direction]
-
-images.onValue (image) ->
-  # TODO preload
+loadImage = (url) ->
+  promise = $.Deferred()
   img = new Image()
-  img.src = image
-  img.onload = ->
-    ctx = $('#game').get(0).getContext('2d')
-    ctx.drawImage(img, 0, 0)
-
+  img.onload = promise.resolve
+  img.src = url
+  promise
 
 play = (mp3) ->
   audio = new Audio()
@@ -30,4 +24,17 @@ play = (mp3) ->
   audio.load()
   audio.play()
 
-spaceKey.take(1).onValue(-> play("../moshiro.mp3"))
+# TODO load mp3 before starting
+$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2) ->
+  poses = { UP: frame1, DOWN: frame2 }
+
+  images = spaceKey.map (direction) -> poses[direction]
+
+  images.onValue (image) ->
+    ctx = $('#game').get(0).getContext('2d')
+    ctx.drawImage(image, 0, 0)
+
+  $('#loading').hide()
+  $('#game').show()
+
+  spaceKey.take(1).onValue(-> play("../moshiro.mp3"))
