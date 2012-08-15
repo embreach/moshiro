@@ -2,12 +2,28 @@ always = (constant) ->
   -> constant
 
 key = (keyCode) ->
-  events = (type) -> $(document).asEventStream(type).filter((event) -> event.keyCode == keyCode)
+  events = (type) ->
+    $(document).asEventStream(type).filter((event) -> event.keyCode == keyCode)
+
   keydown = events("keydown").map(always("DOWN"))
   keyup = events("keyup").map(always("UP"))
-  keydown.merge(keyup).toProperty("UP").distinctUntilChanged()
+  keydown.merge(keyup).distinctUntilChanged()
 
-space = key(32)
+spaceKey = key(32)
+
+poses = { UP: "/Moshiro_1frame.png", DOWN: "/Moshiro_2frame.png" }
+
+images = spaceKey.map (direction) -> poses[direction]
+
+images.onValue (image) ->
+  console.log("Draw", image)
+  # TODO preload
+  img = new Image()
+  img.src = image
+  img.onload = ->
+    ctx = $('#game').get(0).getContext('2d')
+    ctx.drawImage(img, 0, 0)
+
 
 play = (mp3) ->
   audio = new Audio()
@@ -15,14 +31,4 @@ play = (mp3) ->
   audio.load()
   audio.play()
 
-images = space.map((direction) -> if direction == "UP" then "/Moshiro_1frame.png" else "/Moshiro_2frame.png")
-
-images.onValue((image) -> )
-
-img = new Image()
-img.onload = ->
-  ctx = $('#game').get(0).getContext('2d')
-  ctx.drawImage(img, 0, 0)
-img.src = "/Moshiro_1frame.png"
-
-window["start"] = -> play("/moshiro.mp3")
+spaceKey.take(1).onValue(-> play("/moshiro.mp3"))
