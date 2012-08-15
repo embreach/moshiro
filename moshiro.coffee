@@ -11,6 +11,7 @@ key = (keyCode) ->
 
 spaceKey = key(32)
 
+# TODO Cleanup
 touches = ->
   touch = $('body').asEventStream('touchstart').map(always("DOWN"))
   cantTouch = $('body').asEventStream('touchend').map(always("UP"))
@@ -25,17 +26,14 @@ loadImage = (url) ->
   img.src = url
   promise
 
-loadAudio = (url) ->
-  promise = $.Deferred()
+# Can't pre-load, since iOs only allows media downloads to start from user events
+playAudio = (url) ->
   audio = new Audio()
-  audio.addEventListener "canplaythrough", -> promise.resolve audio
   audio.setAttribute("src", url)
   audio.load()
-  promise
+  audio.play()
 
-# FIXME mp3 not loaded!
-# loadAudio("../moshiro.mp3")
-$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2, theme) ->
+$.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2) ->
   poses = { UP: frame1, DOWN: frame2 }
 
   images = direction.map (current) -> poses[current]
@@ -50,4 +48,6 @@ $.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).d
   $('#loading').hide()
   $('#game').show()
 
-  spaceKey.take(1).onValue(-> theme.play())
+  # TODO Another loading indicator here
+  direction.take(1).onValue ->
+    playAudio("../moshiro.mp3")
