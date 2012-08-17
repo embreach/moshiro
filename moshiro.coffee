@@ -1,20 +1,17 @@
-always = (constant) ->
-  -> constant
-
 key = (keyCode) ->
   events = (type) ->
     $(document).asEventStream(type).filter((event) -> event.keyCode == keyCode)
 
-  keydown = events("keydown").map(always("DOWN"))
-  keyup = events("keyup").map(always("UP"))
+  keydown = events("keydown").map("DOWN")
+  keyup = events("keyup").map("UP")
   keydown.merge(keyup).distinctUntilChanged()
 
 spaceKey = key(32)
 
 touches = ->
   preventDefault = (e) -> e.preventDefault()
-  touch = $('body').asEventStream('touchstart').do(preventDefault).map(always("DOWN"))
-  cantTouch = $('body').asEventStream('touchend').do(preventDefault).map(always("UP"))
+  touch = $('body').asEventStream('touchstart').do(preventDefault).map("DOWN")
+  cantTouch = $('body').asEventStream('touchend').do(preventDefault).map("UP")
   touch.merge(cantTouch)
 
 direction = spaceKey.merge(touches())
