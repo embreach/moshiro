@@ -1,2 +1,0 @@
-- mp3 doesn't work in FF
-- Notification for IE users
