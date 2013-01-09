@@ -1,4 +1,4 @@
-define ['jquery', 'bacon'], ($) ->
+define ['jquery', 'Bacon'], ($) ->
   key = (keyCode) ->
     events = (type) ->
       $(document).asEventStream(type).filter((event) -> event.keyCode == keyCode)
