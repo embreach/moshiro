@@ -32,7 +32,7 @@ define ['jquery', 'bacon'], ($) ->
     audio.load()
     audio.play()
 
-  $.when(loadImage('../Moshiro_1frame.png'), loadImage('../Moshiro_2frame.png')).done (frame1, frame2) ->
+  $.when(loadImage('app/images/Moshiro_1frame.png'), loadImage('app/images//Moshiro_2frame.png')).done (frame1, frame2) ->
     poses = { UP: frame1, DOWN: frame2 }
 
     images = direction.map (current) -> poses[current]
@@ -49,4 +49,4 @@ define ['jquery', 'bacon'], ($) ->
 
     # TODO Another loading indicator here
     direction.take(1).onValue ->
-      playAudio("../moshiro.mp3")
+      playAudio("app/audio/moshiro.mp3")
